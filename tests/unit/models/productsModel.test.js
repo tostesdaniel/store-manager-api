@@ -36,10 +36,10 @@ describe("Testa listagem de produtos", () => {
 
       after(async () => connection.execute.restore());
 
-      it("Verifica se é retornado undefined", async () => {
+      it("Verifica se é retornado um array vazio", async () => {
         const product = await productsModel.getProductById(103254987);
 
-        expect(product).to.be.undefined;
+        expect(product).to.be.an("array").that.is.empty;
       });
     });
 
@@ -50,16 +50,16 @@ describe("Testa listagem de produtos", () => {
 
       after(async () => connection.execute.restore());
 
-      it("Verifica se o retorno é um objeto", async () => {
+      it("Verifica se o retorno é um array", async () => {
         const product = await productsModel.getProductById(1);
 
-        expect(product).to.be.an("object");
+        expect(product).to.be.an("array");
       });
 
       it("Verifica se é retornado o produto buscado", async () => {
         const product = await productsModel.getProductById(1);
 
-        expect(product).to.be.equal(allProducts[0]);
+        expect(product).to.be.deep.equal([allProducts[0]]);
       });
     });
   });
