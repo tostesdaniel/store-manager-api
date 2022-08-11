@@ -1,12 +1,7 @@
 const sinon = require("sinon");
 const { expect } = require("chai");
-// const productsModel = require("../../../models/productsModel");
+const productsModel = require("../../../models/productsModel");
 const connection = require("../../../models/connection");
-
-const productsModel = {
-  getProducts: () => {},
-  getProductById: () => {},
-};
 
 describe("Testa listagem de produtos", () => {
   const allProducts = [
@@ -16,6 +11,12 @@ describe("Testa listagem de produtos", () => {
   ];
 
   describe("Ao listar todos os produtos", () => {
+    before(async () =>
+      sinon.stub(connection, "execute").resolves([[allProducts]])
+    );
+
+    after(async () => connection.execute.restore());
+
     it("Verifica se é retornado um array", async () => {
       const products = await productsModel.getProducts();
 
@@ -31,14 +32,24 @@ describe("Testa listagem de produtos", () => {
 
   describe("Ao listar um produto por ID", () => {
     describe("Caso o produto não exista", () => {
-      it("Verifica se é retornado null", async () => {
+      before(async () => sinon.stub(connection, "execute").resolves([[]]));
+
+      after(async () => connection.execute.restore());
+
+      it("Verifica se é retornado undefined", async () => {
         const product = await productsModel.getProductById(103254987);
 
-        expect(product).to.be.null;
+        expect(product).to.be.undefined;
       });
     });
 
     describe("Caso o produto exista", () => {
+      before(async () =>
+        sinon.stub(connection, "execute").resolves([[allProducts[0]]])
+      );
+
+      after(async () => connection.execute.restore());
+
       it("Verifica se o retorno é um objeto", async () => {
         const product = await productsModel.getProductById(1);
 
