@@ -1,14 +1,9 @@
 const sinon = require("sinon");
 const { expect } = require("chai");
-// const productsService = require("../../../services/productsService");
-// const productsModel = require("../../../models/productsModel");
+const productsService = require("../../../services/productsService");
+const productsModel = require("../../../models/productsModel");
 
-const productsService = {
-  getProducts: () => {},
-  getProductById: () => {},
-};
-
-describe("Testa listagem de produtos", () => {
+describe("Testa productsService", () => {
   const allProducts = [
     { id: 1, name: "Martelo de Thor" },
     { id: 2, name: "Traje de encolhimento" },
@@ -16,6 +11,12 @@ describe("Testa listagem de produtos", () => {
   ];
 
   describe("Ao listar todos os produtos", () => {
+    before(async () =>
+      sinon.stub(productsModel, "getProducts").resolves(allProducts)
+    );
+
+    after(async () => productsModel.getProducts.restore());
+
     it("Verifica se é retornado um array", async () => {
       const products = await productsService.getProducts();
 
@@ -31,24 +32,43 @@ describe("Testa listagem de produtos", () => {
 
   describe("Ao listar um produto por ID", () => {
     describe("Caso o produto não exista", () => {
-      it("Verifica se é retornado undefined", async () => {
+      const notFoundError = {
+        error: {
+          code: 404,
+          message: "Product not found",
+        },
+      };
+
+      before(async () =>
+        sinon.stub(productsModel, "getProductById").resolves([])
+      );
+
+      after(async () => productsModel.getProductById.restore());
+
+      it("Verifica se é retornado um erro", async () => {
         const product = await productsService.getProductById(103254987);
 
-        expect(product).to.be.undefined;
+        expect(product).to.be.deep.equal(notFoundError);
       });
     });
 
     describe("Caso o produto exista", () => {
-      it("Verifica se o retorno é um objeto", async () => {
+      before(async () =>
+        sinon.stub(productsModel, "getProductById").resolves([allProducts[0]])
+      );
+
+      after(async () => productsModel.getProductById.restore());
+
+      it("Verifica se o retorno é um array contendo um objeto", async () => {
         const product = await productsService.getProductById(1);
 
-        expect(product).to.be.an("object");
+        expect(product).to.be.an("array").that.includes(allProducts[0]);
       });
 
       it("Verifica se é retornado o produto buscado", async () => {
         const product = await productsService.getProductById(1);
 
-        expect(product).to.be.equal(allProducts[0]);
+        expect(product).to.be.deep.equal([allProducts[0]]);
       });
     });
   });
