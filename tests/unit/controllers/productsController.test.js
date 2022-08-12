@@ -52,7 +52,7 @@ describe("Testa productsController", () => {
 
         req.params = { id: 103254987 };
 
-        sinon.stub(productsService, "getProductById").resolves([]);
+        sinon.stub(productsService, "getProductById").resolves(false);
       });
 
       after(async () => productsService.getProductById.restore());
@@ -87,7 +87,7 @@ describe("Testa productsController", () => {
 
         sinon
           .stub(productsService, "getProductById")
-          .resolves([allProducts[0]]);
+          .resolves(allProducts[0]);
       });
 
       after(async () => productsService.getProductById.restore());
