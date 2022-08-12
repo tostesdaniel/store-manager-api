@@ -11,7 +11,11 @@ const productsController = {
 
     const product = await productsService.getProductById(id);
 
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+    if (product.error) {
+      return res
+        .status(product.error.code)
+        .json({ message: product.error.message });
+    }
 
     return res.status(200).json(product);
   },
