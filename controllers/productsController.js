@@ -23,8 +23,10 @@ const productsController = {
     const { name } = req.body;
 
     const product = await productsService.create({ name });
-
-    if (product.message) return next(product.message);
+    
+    if (product.message) {
+      return next(product);
+    }
 
     return res.status(201).json(product);
   },
