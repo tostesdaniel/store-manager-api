@@ -52,7 +52,9 @@ describe("Testa productsController", () => {
 
         req.params = { id: 103254987 };
 
-        sinon.stub(productsService, "getProductById").resolves(false);
+        sinon
+          .stub(productsService, "getProductById")
+          .resolves({ error: notFoundError });
       });
 
       after(async () => productsService.getProductById.restore());
@@ -85,9 +87,7 @@ describe("Testa productsController", () => {
 
         req.params = { id: 1 };
 
-        sinon
-          .stub(productsService, "getProductById")
-          .resolves(allProducts[0]);
+        sinon.stub(productsService, "getProductById").resolves(allProducts[0]);
       });
 
       after(async () => productsService.getProductById.restore());
