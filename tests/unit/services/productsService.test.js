@@ -72,4 +72,28 @@ describe("Testa productsService", () => {
       });
     });
   });
+
+  describe("Ao cadastrar um produto", () => {
+    const create = () => {};
+
+    it("Verifica se retorna erro caso a requisição não contenha o nome do produto", async () => {
+      const product = create();
+
+      expect(product).to.be.equal({ message: '"name" is required' });
+    });
+
+    it("Verifica se retorna erro caso a requisição contenha um nome com menos de 5 caracteres", async () => {
+      const product = create();
+
+      expect(product).to.be.equal({
+        message: '"name" length must be at least 5 characters long',
+      });
+    });
+
+    it("Verifica se retorna os dados do produto cadastrado em caso de sucesso", async () => {
+      const product = create();
+
+      expect(product).to.be.equal({ id: 4, name: "Product name" });
+    });
+  });
 });
