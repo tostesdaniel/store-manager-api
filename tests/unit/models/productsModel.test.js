@@ -65,13 +65,18 @@ describe("Testa productsModel", () => {
   });
 
   describe("Ao cadastrar um produto", () => {
-    it("Verifica se ao cadastrar um produto, é retornado os dados do produto", async () => {
-      const product = () => {};
+    const newProduct = { name: "New product" };
 
-      expect(product).to.be.equal({
-        id: 4,
-        name: "New product",
-      });
+    before(async () =>
+      sinon.stub(connection, "execute").resolves([{ insertId: 4 }])
+    );
+
+    after(async () => connection.execute.restore());
+
+    it("Verifica se ao cadastrar um produto, é retornado os dados do produto", async () => {
+      const product = await productsModel.create(newProduct);
+
+      expect(product).to.be.deep.equal({ id: 4, name: "New product" });
     });
   });
 });
