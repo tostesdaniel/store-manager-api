@@ -85,14 +85,14 @@ describe("Testa productsService", () => {
     it("Verifica se retorna erro caso a requisição não contenha o nome do produto", async () => {
       const product = await productsService.create({});
 
-      expect(product).to.be.deep.equal({ message: '"name" is required' });
+      expect(product).to.be.deep.equal({ message: '"name" is required|400' });
     });
 
     it("Verifica se retorna erro caso a requisição contenha um nome com menos de 5 caracteres", async () => {
       const product = await productsService.create({ name: "Gum" });
 
       expect(product).to.be.deep.equal({
-        message: '"name" length must be at least 5 characters long',
+        message: '"name" length must be at least 5 characters long|422',
       });
     });
 
