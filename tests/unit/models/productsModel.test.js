@@ -26,7 +26,7 @@ describe("Testa listagem de produtos", () => {
     it("Verifica se são retornados todos os produtos", async () => {
       const products = await productsModel.getProducts();
 
-      expect(products).to.be.equal(allProducts);
+      expect(products).to.be.deep.equal([allProducts]);
     });
   });
 
