@@ -3,7 +3,7 @@ const { expect } = require("chai");
 const productsModel = require("../../../models/productsModel");
 const connection = require("../../../models/connection");
 
-describe("Testa listagem de produtos", () => {
+describe("Testa productsModel", () => {
   const allProducts = [
     { id: 1, name: "Martelo de Thor" },
     { id: 2, name: "Traje de encolhimento" },
@@ -60,6 +60,17 @@ describe("Testa listagem de produtos", () => {
         const product = await productsModel.getProductById(1);
 
         expect(product).to.be.deep.equal([allProducts[0]]);
+      });
+    });
+  });
+
+  describe("Ao cadastrar um produto", () => {
+    it("Verifica se ao cadastrar um produto, é retornado os dados do produto", async () => {
+      const product = () => {};
+
+      expect(product).to.be.equal({
+        id: 4,
+        name: "New product",
       });
     });
   });
