@@ -7,9 +7,9 @@ const productsService = {
     return products;
   },
   getProductById: async (id) => {
-    const product = await productsModel.getProductById(id);
+    const [product] = await productsModel.getProductById(id);
 
-    if (Array.isArray(product) && !product.length) {
+    if (!product) {
       return {
         error: {
           code: 404,
