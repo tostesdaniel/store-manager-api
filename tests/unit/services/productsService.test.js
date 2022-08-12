@@ -59,16 +59,16 @@ describe("Testa productsService", () => {
 
       after(async () => productsModel.getProductById.restore());
 
-      it("Verifica se o retorno é um array contendo um objeto", async () => {
+      it("Verifica se o retorno é um objeto contendo informações do produto", async () => {
         const product = await productsService.getProductById(1);
 
-        expect(product).to.be.an("array").that.includes(allProducts[0]);
+        expect(product).to.be.deep.equal(allProducts[0]);
       });
 
       it("Verifica se é retornado o produto buscado", async () => {
         const product = await productsService.getProductById(1);
 
-        expect(product).to.be.deep.equal([allProducts[0]]);
+        expect(product).to.be.deep.equal(allProducts[0]);
       });
     });
   });
