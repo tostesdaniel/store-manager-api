@@ -107,80 +107,85 @@ describe("Testa productsController", () => {
   });
 
   describe("Ao cadastrar um produto", () => {
-    const create = () => {};
+    const rightResponse = { id: 4, name: "Product name" };
+    const emptyBodyResponse = { message: '"name" is required|400' };
+    const nameLengthResponse = {
+      message: '"name" length must be at least 5 characters long|422',
+    };
 
     describe("Caso não seja passado name no corpo da requisição", () => {
       const req = {};
       const res = {};
+      let next;
 
       before(() => {
         req.body = {};
 
         res.status = sinon.stub().returns(res);
-        res.status = sinon.stub().returns();
+        res.json = sinon.stub().returns();
+        next = sinon.stub().returns();
+
+        sinon.stub(productsService, "create").resolves(emptyBodyResponse);
       });
 
-      it("Verifica se status é chamado com código 400", async () => {
-        await create(req, res);
+      after(() => productsService.create.restore());
 
-        expect(res.status.calledWith(400)).to.be.true;
-      });
+      it("Verifica se next é chamado com objeto de erro correto", async () => {
+        await productsController.create(req, res, next);
 
-      it("Verifica se json é chamado com um objeto de erro", async () => {
-        await create(req, res);
-
-        expect(res.json.calledWith({ message: '"name" is required' })).to.be
-          .true;
+        expect(next.calledWith(emptyBodyResponse)).to.be.true;
       });
     });
 
     describe("Caso name no corpo da requisição tenha menos de 5 caracteres", () => {
       const req = {};
       const res = {};
+      let next;
 
       before(() => {
         req.body = { name: "Gum" };
 
         res.status = sinon.stub().returns(res);
-        res.status = sinon.stub().returns();
+        res.json = sinon.stub().returns();
+        next = sinon.stub().returns();
+
+        sinon.stub(productsService, "create").resolves(nameLengthResponse);
       });
 
-      it("Verifica se status é chamado com código 422", async () => {
-        await create(req, res);
+      after(() => productsService.create.restore());
 
-        expect(res.status.calledWith(422)).to.be.true;
-      });
+      it("Verifica se next é chamado com objeto de erro correto", async () => {
+        await productsController.create(req, res, next);
 
-      it("Verifica se json é chamado com um objeto de erro", async () => {
-        await create(req, res);
-
-        expect(
-          res.json.calledWith({
-            message: '"name" length must be at least 5 characters long',
-          })
-        ).to.be.true;
+        expect(next.calledWith(nameLengthResponse)).to.be.true;
       });
     });
 
     describe("Caso o corpo da requisição seja passado corretamente", () => {
       const req = {};
       const res = {};
+      let next;
 
       before(() => {
         req.body = { name: "Product name" };
 
         res.status = sinon.stub().returns(res);
-        res.status = sinon.stub().returns();
+        res.json = sinon.stub().returns();
+        next = sinon.stub().returns();
+
+        sinon.stub(productsService, "create").resolves(rightResponse);
       });
 
+      after(() => productsService.create.restore());
+
       it("Verifica se status é chamado com código 201", async () => {
-        await create(req, res);
+        await productsController.create(req, res, next);
 
         expect(res.status.calledWith(201)).to.be.true;
       });
 
       it("Verifica se json é chamado com as informações da inserção", async () => {
-        await create(req, res);
+        await productsController.create(req, res, next);
 
         expect(res.json.calledWith({ id: 4, name: "Product name" })).to.be.true;
       });
