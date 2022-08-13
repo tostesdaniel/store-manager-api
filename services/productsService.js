@@ -43,6 +43,4 @@ const productsService = {
   },
 };
 
-productsService.update(3);
-
 module.exports = productsService;
