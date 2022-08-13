@@ -79,4 +79,14 @@ describe("Testa productsModel", () => {
       expect(product).to.be.deep.equal({ id: 4, name: "New product" });
     });
   });
+
+  describe("Ao atualizar um produto", () => {
+    const updatedProduct = { id: 1, name: "Mjolnir" };
+
+    it("Verifica se é retornado o produto alterado", async () => {
+      const product = () => {};
+
+      expect(product).to.be.deep.equal(updatedProduct);
+    });
+  });
 });
