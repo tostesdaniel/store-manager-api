@@ -83,8 +83,14 @@ describe("Testa productsModel", () => {
   describe("Ao atualizar um produto", () => {
     const updatedProduct = { id: 1, name: "Mjolnir" };
 
+    before(async () =>
+      sinon.stub(productsModel, "getProductById").resolves([updatedProduct])
+    );
+
+    after(async () => productsModel.getProductById.restore());
+
     it("Verifica se é retornado o produto alterado", async () => {
-      const product = () => {};
+      const product = await productsModel.update(1, { name: "Mjolnir" });
 
       expect(product).to.be.deep.equal(updatedProduct);
     });
