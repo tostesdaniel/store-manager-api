@@ -193,15 +193,16 @@ describe("Testa productsController", () => {
   });
 
   describe("Ao atualizar um produto", () => {
-    const service = {
-      update: () => {},
-    };
-
     describe("Caso o produto não exista no banco de dados", () => {
-      const errorMessage = { message: "Product not found" };
+      const notFoundResponse = { message: "Product not found|404" };
+      const emptyBodyResponse = { message: '"name" is required|400' };
+      const nameLengthResponse = {
+        message: '"name" length must be at least 5 characters long|422',
+      };
 
       const req = {};
       const res = {};
+      let next;
 
       before(() => {
         req.body = { name: "Mjolnir" };
@@ -209,22 +210,17 @@ describe("Testa productsController", () => {
 
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
+        next = sinon.stub().returns();
 
-        sinon.stub(productsService, "update").resolves(errorMessage);
+        sinon.stub(productsService, "update").resolves(notFoundResponse);
       });
 
       after(() => productsService.update.restore());
 
-      it("Verifica se status é chamado com código 404", async () => {
-        await productsController.update(req, res);
+      it("Verifica se next é chamado com objeto de erro correto", async () => {
+        await productsController.update(req, res, next);
 
-        expect(res.status.calledWith(404)).to.be.true;
-      });
-
-      it("Verifica se json é chamado com objeto de erro", async () => {
-        await productsController.update(req, res);
-
-        expect(res.json.calledWith(errorMessage));
+        expect(next.calledWith(notFoundResponse)).to.be.true;
       });
     });
 
@@ -233,6 +229,7 @@ describe("Testa productsController", () => {
 
       const req = {};
       const res = {};
+      let next;
 
       before(() => {
         req.body = { name: "Mjolnir" };
@@ -240,6 +237,7 @@ describe("Testa productsController", () => {
 
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
+        next = sinon.stub().returns();
 
         sinon.stub(productsService, "update").resolves(updatedProduct);
       });
@@ -247,13 +245,13 @@ describe("Testa productsController", () => {
       after(() => productsService.update.restore());
 
       it("Verifica se status é chamado com código 200", async () => {
-        await productsController.update(req, res);
+        await productsController.update(req, res, next);
 
         expect(res.status.calledWith(200)).to.be.true;
       });
 
       it("Verifica se json é chamado com as informações do produto", async () => {
-        await productsController.update(req, res);
+        await productsController.update(req, res, next);
 
         expect(res.json.calledWith(updatedProduct));
       });
