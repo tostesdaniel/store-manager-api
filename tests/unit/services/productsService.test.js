@@ -104,18 +104,39 @@ describe("Testa productsService", () => {
   });
 
   describe("Ao atualizar um produto", () => {
-    const placeholderFn = () => {};
+    const updatedProduct = { id: 1, name: "Mjolnir" };
 
-    it("Verifica que não é possível atualizar um produto inexistente", async () => {
-      const product = placeholderFn();
+    describe("Caso o produto não exista no banco de dados", () => {
+      const nonexistentProduct = { name: "Tesla" };
 
-      expect(product).to.be.equal({ message: "Product not found" });
+      before(async () =>
+        sinon.stub(productsModel, "update").resolves(updatedProduct)
+      );
+
+      after(async () => productsModel.update.restore());
+
+      it("Verifica que não é possível realizar a operação", async () => {
+        const product = await productsService.update(4, nonexistentProduct);
+
+        expect(product).to.be.deep.equal({ message: "Product not found" });
+      });
     });
 
-    it("Verifica se é retornado o produto atualizado", async () => {
-      const product = placeholderFn();
+    describe("Caso o produto exista", () => {
+      const productToUpdate = { name: "Martelo de Thor" };
+      const updatedProduct = { id: 1, name: "Mjolnir" };
 
-      expect(product).to.be.equal({ id: 1, name: "Mjolnir" });
+      before(async () =>
+        sinon.stub(productsModel, "update").resolves(updatedProduct)
+      );
+
+      after(async () => productsModel.update.restore());
+
+      it("Verifica se é retornado o produto atualizado", async () => {
+        const product = await productsService.update(1, productToUpdate);
+
+        expect(product).to.be.equal(updatedProduct);
+      });
     });
   });
 });
