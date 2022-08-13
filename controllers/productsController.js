@@ -30,13 +30,13 @@ const productsController = {
 
     return res.status(201).json(product);
   },
-  update: async (req, res) => {
+  update: async (req, res, next) => {
     const { name } = req.body;
     const { id } = req.params;
 
     const product = await productsService.update(id, { name });
 
-    if (product.message) return res.status(404).json(product);
+    if (product.message) return next(product);
 
     return res.status(200).json(product);
   },
