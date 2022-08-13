@@ -33,9 +33,15 @@ const productsService = {
     return product;
   },
   update: async (productId, productData) => {
+    const input = validations.updateProduct.validate(productData);
+
+    if (input.error) {
+      return { message: input.error.details[0].message };
+    }
+
     const idIsValid = await productsModel.getProductById(productId);
 
-    if (!idIsValid.length) return { message: 'Product not found' };
+    if (!idIsValid.length) return { message: 'Product not found|404' };
 
     const product = await productsModel.update(productId, productData);
 
