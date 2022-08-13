@@ -191,4 +191,64 @@ describe("Testa productsController", () => {
       });
     });
   });
+
+  describe("Ao atualizar um produto", () => {
+    const service = {
+      update: () => {},
+    };
+
+    describe("Caso o produto não exista no banco de dados", () => {
+      const errorMessage = { message: "Product not found" };
+
+      const req = {};
+      const res = {};
+
+      before(() => {
+        req.body = { name: "Mjolnir" };
+        req.params = { id: 4 };
+
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+      });
+
+      it("Verifica se status é chamado com código 404", async () => {
+        await service.update(req, res);
+
+        expect(res.status.calledWith(404)).to.be.true;
+      });
+
+      it("Verifica se json é chamado com objeto de erro", async () => {
+        await service.update(req, res);
+
+        expect(res.json.calledWith(errorMessage));
+      });
+    });
+
+    describe("Caso o produto exista no banco de dados", () => {
+      const updatedProduct = { id: 1, name: "Mjolnir" };
+
+      const req = {};
+      const res = {};
+
+      before(() => {
+        req.body = { name: "Mjolnir" };
+        req.params = { id: 1 };
+
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+      });
+
+      it("Verifica se status é chamado com código 200", async () => {
+        await service.update(req, res);
+
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+
+      it("Verifica se json é chamado com as informações do produto", async () => {
+        await service.update(req, res);
+
+        expect(res.json.calledWith(updatedProduct));
+      });
+    });
+  });
 });
