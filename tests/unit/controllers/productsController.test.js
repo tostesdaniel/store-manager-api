@@ -209,16 +209,20 @@ describe("Testa productsController", () => {
 
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
+
+        sinon.stub(productsService, "update").resolves(errorMessage);
       });
 
+      after(() => productsService.update.restore());
+
       it("Verifica se status é chamado com código 404", async () => {
-        await service.update(req, res);
+        await productsController.update(req, res);
 
         expect(res.status.calledWith(404)).to.be.true;
       });
 
       it("Verifica se json é chamado com objeto de erro", async () => {
-        await service.update(req, res);
+        await productsController.update(req, res);
 
         expect(res.json.calledWith(errorMessage));
       });
@@ -236,16 +240,20 @@ describe("Testa productsController", () => {
 
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
+
+        sinon.stub(productsService, "update").resolves(updatedProduct);
       });
 
+      after(() => productsService.update.restore());
+
       it("Verifica se status é chamado com código 200", async () => {
-        await service.update(req, res);
+        await productsController.update(req, res);
 
         expect(res.status.calledWith(200)).to.be.true;
       });
 
       it("Verifica se json é chamado com as informações do produto", async () => {
-        await service.update(req, res);
+        await productsController.update(req, res);
 
         expect(res.json.calledWith(updatedProduct));
       });
