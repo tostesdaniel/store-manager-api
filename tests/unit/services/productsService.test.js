@@ -102,4 +102,20 @@ describe("Testa productsService", () => {
       expect(product).to.be.equal(newProduct);
     });
   });
+
+  describe("Ao atualizar um produto", () => {
+    const placeholderFn = () => {};
+
+    it("Verifica que não é possível atualizar um produto inexistente", async () => {
+      const product = placeholderFn();
+
+      expect(product).to.be.equal({ message: "Product not found" });
+    });
+
+    it("Verifica se é retornado o produto atualizado", async () => {
+      const product = placeholderFn();
+
+      expect(product).to.be.equal({ id: 1, name: "Mjolnir" });
+    });
+  });
 });
