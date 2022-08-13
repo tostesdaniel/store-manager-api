@@ -118,7 +118,7 @@ describe("Testa productsService", () => {
       it("Verifica que não é possível realizar a operação", async () => {
         const product = await productsService.update(4, nonexistentProduct);
 
-        expect(product).to.be.deep.equal({ message: "Product not found" });
+        expect(product).to.be.deep.equal({ message: "Product not found|404" });
       });
     });
 
