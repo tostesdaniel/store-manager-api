@@ -32,6 +32,17 @@ const productsService = {
 
     return product;
   },
+  update: async (productId, productData) => {
+    const idIsValid = await productsModel.getProductById(productId);
+
+    if (!idIsValid.length) return { message: 'Product not found' };
+
+    const product = await productsModel.update(productId, productData);
+
+    return product;
+  },
 };
+
+productsService.update(3);
 
 module.exports = productsService;
