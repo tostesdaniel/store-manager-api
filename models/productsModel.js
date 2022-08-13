@@ -23,7 +23,7 @@ const productsModel = {
     const query = 'UPDATE StoreManager.products SET name = ? WHERE id = ?';
     await connection.execute(query, [name, id]);
 
-    const [updatedProduct] = await productsModel.getProductById(1);
+    const [updatedProduct] = await productsModel.getProductById(id);
 
     return updatedProduct;
   },
