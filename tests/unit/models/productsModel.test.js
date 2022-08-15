@@ -95,4 +95,16 @@ describe("Testa productsModel", () => {
       expect(product).to.be.deep.equal(updatedProduct);
     });
   });
+
+  describe("Ao deletar um produto", () => {
+    const model = {
+      delete: () => {},
+    };
+
+    it("Verifica que não é possível produto inexistente", async () => {
+      const [deletion] = await model.delete(103254987);
+
+      expect(deletion.affectedRows).to.equal(0);
+    });
+  });
 });
