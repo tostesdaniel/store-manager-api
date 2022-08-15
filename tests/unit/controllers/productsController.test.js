@@ -300,10 +300,10 @@ describe("Testa productsController", () => {
 
       after(() => productsService.delete.restore());
 
-      it("Verifica que status é chamado com código 200", async () => {
+      it("Verifica que status é chamado com código 204", async () => {
         await productsController.delete(req, res, next);
 
-        expect(res.status.calledWith(200)).to.be.true;
+        expect(res.status.calledWith(204)).to.be.true;
       });
 
       it("Verifica que end é chamado", async () => {
