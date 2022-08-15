@@ -53,6 +53,8 @@ const productsService = {
     if (!idIsValid.length) return { message: 'Product not found|404' };
 
     await productsModel.delete(id);
+
+    return true;
   },
 };
 
