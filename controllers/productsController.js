@@ -40,6 +40,15 @@ const productsController = {
 
     return res.status(200).json(product);
   },
+  delete: async (req, res, next) => {
+    const { id } = req.params;
+
+    const deletion = await productsService.delete(id);
+
+    if (deletion.message) return next(deletion);
+
+    return res.status(200).end();
+  },
 };
 
 module.exports = productsController;
