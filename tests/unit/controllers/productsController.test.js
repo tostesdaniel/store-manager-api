@@ -259,10 +259,6 @@ describe("Testa productsController", () => {
   });
 
   describe("Ao deletar um produto", () => {
-    const controller = {
-      delete: () => {},
-    };
-
     describe("Caso o produto não exista", () => {
       const notFoundError = { message: "Product not found|404" };
 
@@ -275,10 +271,14 @@ describe("Testa productsController", () => {
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
         next = sinon.stub().returns();
+
+        sinon.stub(productsService, "delete").resolves(notFoundError);
       });
 
+      after(() => productsService.delete.restore());
+
       it("Verifica que next é chamado com objeto de erro", async () => {
-        await controller.delete(req, res, next);
+        await productsController.delete(req, res, next);
 
         expect(next.calledWith(notFoundError)).to.be.true;
       });
@@ -289,21 +289,25 @@ describe("Testa productsController", () => {
       const res = {};
       let next;
 
-      before(() => {
+      before(async () => {
         req.params = { id: 3 };
         res.status = sinon.stub().returns(res);
         res.end = sinon.stub().returns();
         next = sinon.stub().returns();
+
+        sinon.stub(productsService, "delete").resolves({});
       });
 
+      after(() => productsService.delete.restore());
+
       it("Verifica que status é chamado com código 200", async () => {
-        await controller.delete(req, res, next);
+        await productsController.delete(req, res, next);
 
         expect(res.status.calledWith(200)).to.be.true;
       });
 
       it("Verifica que end é chamado", async () => {
-        await controller.delete(req, res, next);
+        await productsController.delete(req, res, next);
 
         expect(res.end.called).to.be.true;
       });
