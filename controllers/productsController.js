@@ -47,7 +47,7 @@ const productsController = {
 
     if (deletion.message) return next(deletion);
 
-    return res.status(200).end();
+    return res.status(204).end();
   },
 };
 
