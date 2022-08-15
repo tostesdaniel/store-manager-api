@@ -141,14 +141,16 @@ describe("Testa productsService", () => {
   });
 
   describe("Ao deletar um produto", () => {
-    const service = {
-      delete: () => {},
-    };
+    before(async () =>
+      sinon.stub(productsModel, "getProductById").resolves([])
+    );
+
+    after(async () => productsModel.getProductById.restore());
 
     it("Verifica se retorna erro ao deletar um produto inexistente", async () => {
-      const deletion = service.delete(103254987);
+      const deletion = await productsService.delete(103254987);
 
-      expect(deletion).to.be.equal({ message: "Product not found|404" });
+      expect(deletion).to.be.deep.equal({ message: "Product not found|404" });
     });
   });
 });
