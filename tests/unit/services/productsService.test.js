@@ -141,16 +141,36 @@ describe("Testa productsService", () => {
   });
 
   describe("Ao deletar um produto", () => {
-    before(async () =>
-      sinon.stub(productsModel, "getProductById").resolves([])
-    );
+    describe("Caso o produto não exista", () => {
+      before(async () =>
+        sinon.stub(productsModel, "getProductById").resolves([])
+      );
 
-    after(async () => productsModel.getProductById.restore());
+      after(async () => productsModel.getProductById.restore());
 
-    it("Verifica se retorna erro ao deletar um produto inexistente", async () => {
-      const deletion = await productsService.delete(103254987);
+      it("Verifica se retorna erro ao deletar um produto inexistente", async () => {
+        const deletion = await productsService.delete(103254987);
 
-      expect(deletion).to.be.deep.equal({ message: "Product not found|404" });
+        expect(deletion).to.be.deep.equal({ message: "Product not found|404" });
+      });
+    });
+
+    describe("Caso o produto exista", () => {
+      before(async () => sinon.stub(productsModel, "delete").resolves());
+
+      after(async () => productsModel.delete.restore());
+
+      it("Verifica se productsModel.delete é chamada corretamente", async () => {
+        await productsService.delete(3);
+
+        expect(productsModel.delete.calledWith(3)).to.be.true;
+      });
+
+      it("Verifica se a função retorna true", async () => {
+        const deletion = await productsService.delete(3);
+
+        expect(deletion).to.equal(true);
+      });
     });
   });
 });
