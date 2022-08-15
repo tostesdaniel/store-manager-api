@@ -1,15 +1,16 @@
-// const sinon = require("sinon");
+const sinon = require("sinon");
 const { expect } = require("chai");
-// const salesModel = require("../../../models/salesModel");
-// const connection = require("../../../models/connection");
-
-const salesModel = {
-  create: () => {},
-  createLink: () => {},
-};
+const salesModel = require("../../../models/salesModel");
+const connection = require("../../../models/connection");
 
 describe("Testa salesModel", () => {
   describe("Ao cadastrar uma venda", () => {
+    before(async () =>
+      sinon.stub(connection, "execute").resolves([{ insertId: 3 }])
+    );
+
+    after(async () => connection.execute.restore());
+    
     it("Verifica se é retornado o id da venda ao criar uma venda em sales", async () => {
       const response = await salesModel.create();
 
