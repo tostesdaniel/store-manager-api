@@ -47,6 +47,13 @@ const productsService = {
 
     return product;
   },
+  delete: async (id) => {
+    const idIsValid = await productsModel.getProductById(id);
+
+    if (!idIsValid.length) return { message: 'Product not found|404' };
+
+    await productsModel.delete(id);
+  },
 };
 
 module.exports = productsService;
