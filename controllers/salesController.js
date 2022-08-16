@@ -10,6 +10,20 @@ const salesController = {
 
     return res.status(201).json(response);
   },
+  get: async (_req, res) => {
+    const response = await salesService.get();
+
+    return res.status(200).json(response);
+  },
+  getById: async (req, res, next) => {
+    const { id } = req.params;
+
+    const response = await salesService.getById(id);
+
+    if (response.message) return next(response);
+
+    return res.status(200).json(response);
+  },
 };
 
 module.exports = salesController;
