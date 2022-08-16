@@ -125,21 +125,25 @@ describe("Testa salesService", () => {
   });
 
   describe("Ao atualizar uma venda", () => {
-    const salesServiceMock = {
-      update: () => {},
-    };
-
     describe("Caso a venda não exista", () => {
+      before(async () => sinon.stub(salesModel, "update").resolves(1999));
+
+      after(async () => salesModel.update.restore());
+
       it("Verifica se retorna mensagem de erro", async () => {
-        const response = await salesServiceMock.update(1999, validSaleBody);
+        const response = await salesService.update(1999, validSaleBody);
 
         expect(response).to.be.deep.equal(saleNotFoundResponse);
       });
     });
 
     describe("Caso a venda exista", () => {
+      before(async () => sinon.stub(salesModel, "update").resolves(2));
+
+      after(async () => salesModel.update.restore());
+
       it("Verifica se é retornado os dados atualizados da venda", async () => {
-        const response = await salesServiceMock.update(2, validSaleBody);
+        const response = await salesService.update(2, validSaleBody);
 
         expect(response).to.be.deep.equal(updatedSaleResponse);
       });
