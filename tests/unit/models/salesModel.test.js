@@ -61,12 +61,12 @@ describe("Testa salesModel", () => {
   });
 
   describe("Ao deletar uma venda", () => {
-    const fakeSalesModel = {
-      delete: () => {},
-    };
+    before(async () => sinon.stub(connection, "execute").resolves());
+
+    after(async () => connection.execute.restore());
 
     it("Valida se é retornado true ao deletar uma venda com sucesso", async () => {
-      const response = await fakeSalesModel.delete(2);
+      const response = await salesModel.delete(2);
 
       expect(response).to.equal(true);
     });
