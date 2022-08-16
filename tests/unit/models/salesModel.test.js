@@ -73,12 +73,15 @@ describe("Testa salesModel", () => {
   });
 
   describe("Ao atualizar uma venda", () => {
-    const salesModelMock = {
-      update: () => {},
-    };
+    before(async () => sinon.stub(connection, "execute").resolves());
+
+    after(async () => connection.execute.restore());
 
     it("Valida se é retornado o id da venda alterada", async () => {
-      const response = await salesModelMock.update(2);
+      const response = await salesModel.update(2, {
+        product_id: 2,
+        quantity: 15,
+      });
 
       expect(response).to.equal(2);
     });
