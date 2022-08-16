@@ -9,6 +9,8 @@ const {
   notFoundResponse,
   goodSaleBody,
   saleNotFoundResponse,
+  validSaleBody,
+  updatedSaleResponse,
 } = require("../mocks/sales");
 
 describe("Testa salesService", () => {
@@ -118,6 +120,28 @@ describe("Testa salesService", () => {
         const response = await salesService.delete(2);
 
         expect(response).to.equal(true);
+      });
+    });
+  });
+
+  describe("Ao atualizar uma venda", () => {
+    const salesServiceMock = {
+      update: () => {},
+    };
+
+    describe("Caso a venda não exista", () => {
+      it("Verifica se retorna mensagem de erro", async () => {
+        const response = await salesServiceMock.update(1999, validSaleBody);
+
+        expect(response).to.be.deep.equal(saleNotFoundResponse);
+      });
+    });
+
+    describe("Caso a venda exista", () => {
+      it("Verifica se é retornado os dados atualizados da venda", async () => {
+        const response = await salesServiceMock.update(2, validSaleBody);
+
+        expect(response).to.be.deep.equal(updatedSaleResponse);
       });
     });
   });
