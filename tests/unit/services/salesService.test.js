@@ -5,6 +5,9 @@ const salesService = require("../../../services/salesService");
 const {
   formattedSalesResponse,
   formattedSingleSaleResponse,
+  noProductIdSaleBody,
+  notFoundResponse,
+  goodSaleBody,
 } = require("../mocks/sales");
 
 describe("Testa salesService", () => {
