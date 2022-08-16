@@ -8,6 +8,7 @@ const {
   noProductIdSaleBody,
   notFoundResponse,
   goodSaleBody,
+  saleNotFoundResponse,
 } = require("../mocks/sales");
 
 describe("Testa salesService", () => {
@@ -91,6 +92,28 @@ describe("Testa salesService", () => {
         const response = await salesService.getById(2);
 
         expect(response).to.be.deep.equal(formattedSingleSaleResponse);
+      });
+    });
+  });
+
+  describe("Ao deletar uma venda", () => {
+    const fakeSalesService = {
+      delete: () => {},
+    };
+
+    describe("Caso a venda não exista", () => {
+      it("Verifica que não é possível deletar a venda com sucesso", async () => {
+        const response = await fakeSalesService.delete(2);
+
+        expect(response).to.be.equal(saleNotFoundResponse);
+      });
+    });
+
+    describe("Caso a venda exista", () => {
+      it("Verifica que retorna true", async () => {
+        const response = await fakeSalesService.delete(2);
+
+        expect(response).to.equal(true);
       });
     });
   });
