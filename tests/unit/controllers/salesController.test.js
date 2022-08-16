@@ -8,6 +8,7 @@ const {
   notFoundResponse,
   goodSaleBody,
   formattedSingleSaleResponse,
+  saleNotFoundResponse,
 } = require("../mocks/sales");
 
 describe("Testa salesController", () => {
@@ -148,6 +149,52 @@ describe("Testa salesController", () => {
         await salesController.getById(req, res, next);
 
         expect(res.json.calledWith(formattedSingleSaleResponse)).to.be.true;
+      });
+    });
+  });
+
+  describe("Ao deletar uma venda", () => {
+    const fakeSalesController = {
+      delete: () => {},
+    };
+
+    describe("Caso a venda não exista", () => {
+      const req = {};
+      const res = {};
+      let next;
+
+      before(() => {
+        next = sinon.stub().returns();
+      });
+
+      it("Verifica que next é chamado com objeto de erro", async () => {
+        await fakeSalesController.delete(req, res, next);
+
+        expect(next.calledWith(saleNotFoundResponse)).to.be.true;
+      });
+    });
+
+    describe("Caso a venda exista", () => {
+      const req = {};
+      const res = {};
+      let next;
+
+      before(() => {
+        res.status = sinon.stub().returns(res);
+        res.end = sinon.stub().returns();
+        next = sinon.stub().returns();
+      });
+
+      it("Verifica que status é chamado com código 201", async () => {
+        await fakeSalesController.delete(req, res, next);
+
+        expect(res.status.calledWith(201)).to.be.true;
+      });
+
+      it("Verifica que end é chamado", async () => {
+        await fakeSalesController.delete(req, res, next);
+
+        expect(res.end.called).to.be.true;
       });
     });
   });
