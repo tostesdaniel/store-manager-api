@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const helper = require('../utils/salesHelper');
 
 const salesModel = {
   create: async () => {
@@ -18,23 +19,28 @@ const salesModel = {
   get: async () => {
     const query = `SELECT sale_id, date, product_id, quantity FROM 
     StoreManager.sales_products AS sp INNER JOIN
-    StoreManager.sales AS s ON sp.sale_id = s.id;`;
+    StoreManager.sales AS s ON sp.sale_id = s.id
+    ORDER BY sale_id, product_id;`;
     const [sales] = await connection.execute(query);
 
-    return sales;
+    const formatedSales = helper.formatAllSales(sales);
+
+    return formatedSales;
   },
-  getById: async (saleId) => {
+  getById: async (id) => {
     const query = `SELECT sale_id, date, product_id, quantity FROM
     StoreManager.sales_products AS sp INNER JOIN
     StoreManager.sales AS s ON sp.sale_id = s.id
-    WHERE sale_id = ?;`;
+    WHERE sale_id = ? ORDER BY sale_id, product_id;`;
 
-    const [sale] = await connection.execute(query, [saleId]);
+    const [sales] = await connection.execute(query, [id]);
 
-    return sale;
+    if (!sales.length) return sales;
+
+    const formattedSales = helper.formatSingleSale(sales);
+
+    return formattedSales;
   },
 };
-
-salesModel.getById(2);
 
 module.exports = salesModel;
