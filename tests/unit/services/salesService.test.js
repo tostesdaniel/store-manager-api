@@ -48,4 +48,51 @@ describe("Testa salesService", () => {
       });
     });
   });
+
+  describe("Ao listar vendas", () => {
+    const allSalesResponse = [
+      {
+        sale_id: 1,
+        date: "2022-08-16T00:06:39.000Z",
+        product_id: 1,
+        quantity: 5,
+      },
+      {
+        sale_id: 1,
+        date: "2022-08-16T00:06:39.000Z",
+        product_id: 2,
+        quantity: 10,
+      },
+      {
+        sale_id: 2,
+        date: "2022-08-16T00:06:39.000Z",
+        product_id: 3,
+        quantity: 15,
+      },
+    ];
+
+    describe("Ao listar todas as vendas", () => {
+      it("Verifica se é possível listar todas as vendas com sucesso", async () => {
+        const response = await salesService.get();
+
+        expect(response).to.be.deep.equal(allSalesResponse);
+      });
+    });
+
+    describe("Ao listar uma venda que não existe", () => {
+      it("Verifica se é retornado um erro", async () => {
+        const response = await salesService.getById(1999);
+
+        expect(response).to.be.deep.equal({ message: "Sale not found" });
+      });
+    });
+
+    describe("Ao listar uma venda que existe", () => {
+      it("Verifica se é possível listar a venda com sucesso", async () => {
+        const response = await salesService.getById(2);
+
+        expect(response).to.be.deep.equal([allSalesResponse[2]]);
+      });
+    });
+  });
 });
