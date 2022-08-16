@@ -54,6 +54,11 @@ module.exports = {
     },
   ],
   noProductIdSaleBody: [{ productId: 1999, quantity: 9 }],
+  validSaleBody: [{ productId: 2, quantity: 15 }],
+  updatedSaleResponse: {
+    saleId: 2,
+    itemsUpdated: [{ productId: 2, quantity: 15 }],
+  },
   goodSaleBody: [
     { productId: 1, quantity: 1 },
     { productId: 2, quantity: 2 },
