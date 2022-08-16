@@ -129,7 +129,7 @@ describe("Testa salesController", () => {
 
         sinon
           .stub(salesService, "getById")
-          .resolves({ message: "Sale not found" });
+          .resolves({ message: "Sale not found|404" });
       });
 
       after(() => salesService.getById.restore());
@@ -137,7 +137,7 @@ describe("Testa salesController", () => {
       it("Verifica se next é chamado com a mensagem de erro", async () => {
         await salesController.getById(req, res, next);
 
-        expect(next.calledWith({ message: "Sale not found" })).to.be.true;
+        expect(next.calledWith({ message: "Sale not found|404" })).to.be.true;
       });
     });
 
