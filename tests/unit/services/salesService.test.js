@@ -72,6 +72,12 @@ describe("Testa salesService", () => {
     ];
 
     describe("Ao listar todas as vendas", () => {
+      before(async () =>
+        sinon.stub(salesModel, "get").resolves(allSalesResponse)
+      );
+
+      after(async () => salesModel.get.restore());
+
       it("Verifica se é possível listar todas as vendas com sucesso", async () => {
         const response = await salesService.get();
 
@@ -80,6 +86,12 @@ describe("Testa salesService", () => {
     });
 
     describe("Ao listar uma venda que não existe", () => {
+      before(async () =>
+        sinon.stub(salesModel, "getById").resolves({ message: "Sale not found" })
+      );
+
+      after(async () => salesModel.getById.restore());
+
       it("Verifica se é retornado um erro", async () => {
         const response = await salesService.getById(1999);
 
@@ -88,6 +100,12 @@ describe("Testa salesService", () => {
     });
 
     describe("Ao listar uma venda que existe", () => {
+      before(async () =>
+        sinon.stub(salesModel, "getById").resolves(allSalesResponse.slice(-1))
+      );
+
+      after(async () => salesModel.getById.restore());
+
       it("Verifica se é possível listar a venda com sucesso", async () => {
         const response = await salesService.getById(2);
 
