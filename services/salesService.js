@@ -35,6 +35,15 @@ const salesService = {
 
     return sales;
   },
+  delete: async (id) => {
+    await salesModel.delete(id);
+
+    const sale = await salesModel.getById(id);
+
+    if (!sale.length) return { message: 'Sale not found|404' };
+
+    return true;
+  },
 };
 
 module.exports = salesService;
