@@ -53,4 +53,10 @@ module.exports = {
       quantity: 15,
     },
   ],
+  noProductIdSaleBody: [{ productId: 1999, quantity: 9 }],
+  goodSaleBody: [
+    { productId: 1, quantity: 1 },
+    { productId: 2, quantity: 2 },
+  ],
+  notFoundResponse: { message: "Product not found|404" },
 };
