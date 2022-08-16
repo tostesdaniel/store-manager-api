@@ -44,6 +44,15 @@ const salesService = {
 
     return true;
   },
+  update: async (id, product) => {
+    const sale = await salesModel.getById(id);
+
+    if (!sale.length) return { message: 'Sale not found|404' };
+
+    const updatedSale = await salesModel.update(id, product);
+
+    return updatedSale;
+  },
 };
 
 module.exports = salesService;
