@@ -71,4 +71,16 @@ describe("Testa salesModel", () => {
       expect(response).to.equal(true);
     });
   });
+
+  describe("Ao atualizar uma venda", () => {
+    const salesModelMock = {
+      update: () => {},
+    };
+
+    it("Valida se é retornado o id da venda alterada", async () => {
+      const response = await salesModelMock.update(2);
+
+      expect(response).to.equal(2);
+    });
+  });
 });
