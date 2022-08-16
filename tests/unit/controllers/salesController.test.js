@@ -224,7 +224,7 @@ describe("Testa salesController", () => {
       });
 
       it("Verifica se next é chamado com objeto de erro", async () => {
-        await salesControllerMock.update(req, res, next);
+        await salesController.update(req, res, next);
 
         expect(next.calledWith(saleNotFoundResponse)).to.be.true;
       });
@@ -235,21 +235,25 @@ describe("Testa salesController", () => {
       const res = {};
       let next;
 
-      beforeEach(() => {
+      before(() => {
         req.body = validSaleBody;
         req.params = { id: 2 };
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
+
+        sinon.stub(salesService, "update").resolves(updatedSaleResponse);
       });
 
+      after(() => salesService.update.restore());
+
       it("Verifica se status é chamado com código 200", async () => {
-        await salesControllerMock.update(req, res, next);
+        await salesController.update(req, res, next);
 
         expect(res.status.calledWith(200)).to.be.true;
       });
 
       it("Verifica se json é chamado com os detalhes da venda atualizada", async () => {
-        await salesControllerMock.update(req, next, next);
+        await salesController.update(req, res, next);
 
         expect(res.json.calledWith(updatedSaleResponse)).to.be.true;
       });
