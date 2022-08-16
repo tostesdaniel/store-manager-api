@@ -97,21 +97,25 @@ describe("Testa salesService", () => {
   });
 
   describe("Ao deletar uma venda", () => {
-    const fakeSalesService = {
-      delete: () => {},
-    };
-
     describe("Caso a venda não exista", () => {
-      it("Verifica que não é possível deletar a venda com sucesso", async () => {
-        const response = await fakeSalesService.delete(2);
+      before(async () => sinon.stub(salesModel, "delete").resolves(true));
 
-        expect(response).to.be.equal(saleNotFoundResponse);
+      after(async () => salesModel.delete.restore());
+
+      it("Verifica que não é possível deletar a venda com sucesso", async () => {
+        const response = await salesService.delete(1999);
+
+        expect(response).to.be.deep.equal(saleNotFoundResponse);
       });
     });
 
     describe("Caso a venda exista", () => {
+      before(async () => sinon.stub(salesModel, "delete").resolves(true));
+
+      after(async () => salesModel.delete.restore());
+
       it("Verifica que retorna true", async () => {
-        const response = await fakeSalesService.delete(2);
+        const response = await salesService.delete(2);
 
         expect(response).to.equal(true);
       });
