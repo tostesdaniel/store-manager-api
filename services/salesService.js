@@ -39,19 +39,19 @@ const salesService = {
     const sale = await salesModel.getById(id);
 
     if (!sale.length) return { message: 'Sale not found|404' };
-    
+
     await salesModel.delete(id);
 
     return true;
   },
-  update: async (id, product) => {
+  update: async (id, products) => {
     const sale = await salesModel.getById(id);
 
     if (!sale.length) return { message: 'Sale not found|404' };
 
-    const updatedSale = await salesModel.update(id, product);
+    const updatedSale = await salesModel.update(id, products);
 
-    return updatedSale;
+    return { saleId: updatedSale, itemsUpdated: products };
   },
 };
 
