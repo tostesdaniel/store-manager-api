@@ -15,6 +15,26 @@ const salesModel = {
 
     return true;
   },
+  get: async () => {
+    const query = `SELECT sale_id, date, product_id, quantity FROM 
+    StoreManager.sales_products AS sp INNER JOIN
+    StoreManager.sales AS s ON sp.sale_id = s.id;`;
+    const [sales] = await connection.execute(query);
+
+    return sales;
+  },
+  getById: async (saleId) => {
+    const query = `SELECT sale_id, date, product_id, quantity FROM
+    StoreManager.sales_products AS sp INNER JOIN
+    StoreManager.sales AS s ON sp.sale_id = s.id
+    WHERE sale_id = ?;`;
+
+    const [sale] = await connection.execute(query, [saleId]);
+
+    return sale;
+  },
 };
+
+salesModel.getById(2);
 
 module.exports = salesModel;
