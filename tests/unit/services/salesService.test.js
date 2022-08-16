@@ -2,6 +2,12 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const salesModel = require("../../../models/salesModel");
 const salesService = require("../../../services/salesService");
+const {
+  allSalesResponse,
+  formattedSalesResponse,
+  singleSaleResponse,
+  formattedSingleSaleResponse,
+} = require("../mocks/sales");
 
 describe("Testa salesService", () => {
   describe("Ao cadastrar uma venda", () => {
@@ -50,27 +56,6 @@ describe("Testa salesService", () => {
   });
 
   describe("Ao listar vendas", () => {
-    const allSalesResponse = [
-      {
-        sale_id: 1,
-        date: "2022-08-16T00:06:39.000Z",
-        product_id: 1,
-        quantity: 5,
-      },
-      {
-        sale_id: 1,
-        date: "2022-08-16T00:06:39.000Z",
-        product_id: 2,
-        quantity: 10,
-      },
-      {
-        sale_id: 2,
-        date: "2022-08-16T00:06:39.000Z",
-        product_id: 3,
-        quantity: 15,
-      },
-    ];
-
     describe("Ao listar todas as vendas", () => {
       before(async () =>
         sinon.stub(salesModel, "get").resolves(allSalesResponse)
@@ -87,7 +72,9 @@ describe("Testa salesService", () => {
 
     describe("Ao listar uma venda que não existe", () => {
       before(async () =>
-        sinon.stub(salesModel, "getById").resolves({ message: "Sale not found" })
+        sinon
+          .stub(salesModel, "getById")
+          .resolves({ message: "Sale not found" })
       );
 
       after(async () => salesModel.getById.restore());
@@ -101,7 +88,7 @@ describe("Testa salesService", () => {
 
     describe("Ao listar uma venda que existe", () => {
       before(async () =>
-        sinon.stub(salesModel, "getById").resolves(allSalesResponse.slice(-1))
+        sinon.stub(salesModel, "getById").resolves(formattedSingleSaleResponse)
       );
 
       after(async () => salesModel.getById.restore());
@@ -109,7 +96,7 @@ describe("Testa salesService", () => {
       it("Verifica se é possível listar a venda com sucesso", async () => {
         const response = await salesService.getById(2);
 
-        expect(response).to.be.deep.equal([allSalesResponse[2]]);
+        expect(response).to.be.deep.equal(formattedSingleSaleResponse);
       });
     });
   });
