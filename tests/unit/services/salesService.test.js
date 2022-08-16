@@ -58,7 +58,7 @@ describe("Testa salesService", () => {
   describe("Ao listar vendas", () => {
     describe("Ao listar todas as vendas", () => {
       before(async () =>
-        sinon.stub(salesModel, "get").resolves(allSalesResponse)
+        sinon.stub(salesModel, "get").resolves(formattedSalesResponse)
       );
 
       after(async () => salesModel.get.restore());
@@ -66,7 +66,7 @@ describe("Testa salesService", () => {
       it("Verifica se é possível listar todas as vendas com sucesso", async () => {
         const response = await salesService.get();
 
-        expect(response).to.be.deep.equal(allSalesResponse);
+        expect(response).to.be.deep.equal(formattedSalesResponse);
       });
     });
 
