@@ -160,6 +160,7 @@ describe("Testa salesController", () => {
       let next;
 
       before(() => {
+        req.params = { id: 1999 };
         next = sinon.stub().returns();
 
         sinon.stub(salesService, "delete").resolves(saleNotFoundResponse);
@@ -180,6 +181,7 @@ describe("Testa salesController", () => {
       let next;
 
       before(() => {
+        req.params = { id: 2 };
         res.status = sinon.stub().returns(res);
         res.end = sinon.stub().returns();
         next = sinon.stub().returns();
