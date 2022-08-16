@@ -9,6 +9,8 @@ const {
   goodSaleBody,
   formattedSingleSaleResponse,
   saleNotFoundResponse,
+  validSaleBody,
+  updatedSaleResponse,
 } = require("../mocks/sales");
 
 describe("Testa salesController", () => {
@@ -201,6 +203,55 @@ describe("Testa salesController", () => {
         await salesController.delete(req, res, next);
 
         expect(res.end.called).to.be.true;
+      });
+    });
+  });
+
+  describe("Ao atualizar uma venda", () => {
+    const salesControllerMock = {
+      update: () => {},
+    };
+
+    describe("Caso a venda não exista", () => {
+      const req = {};
+      const res = {};
+      let next;
+
+      before(() => {
+        req.body = validSaleBody;
+        req.params = { id: 1999 };
+        next = sinon.stub().returns();
+      });
+
+      it("Verifica se next é chamado com objeto de erro", async () => {
+        await salesControllerMock.update(req, res, next);
+
+        expect(next.calledWith(saleNotFoundResponse)).to.be.true;
+      });
+    });
+
+    describe("Caso a venda exista", () => {
+      const req = {};
+      const res = {};
+      let next;
+
+      beforeEach(() => {
+        req.body = validSaleBody;
+        req.params = { id: 2 };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+      });
+
+      it("Verifica se status é chamado com código 200", async () => {
+        await salesControllerMock.update(req, res, next);
+
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+
+      it("Verifica se json é chamado com os detalhes da venda atualizada", async () => {
+        await salesControllerMock.update(req, next, next);
+
+        expect(res.json.calledWith(updatedSaleResponse)).to.be.true;
       });
     });
   });
