@@ -23,9 +23,9 @@ const salesModel = {
     ORDER BY sale_id, product_id;`;
     const [sales] = await connection.execute(query);
 
-    const formatedSales = helper.formatAllSales(sales);
+    const formattedSales = helper.formatAllSales(sales);
 
-    return formatedSales;
+    return formattedSales;
   },
   getById: async (id) => {
     const query = `SELECT sale_id, date, product_id, quantity FROM
