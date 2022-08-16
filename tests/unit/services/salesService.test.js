@@ -3,9 +3,7 @@ const { expect } = require("chai");
 const salesModel = require("../../../models/salesModel");
 const salesService = require("../../../services/salesService");
 const {
-  allSalesResponse,
   formattedSalesResponse,
-  singleSaleResponse,
   formattedSingleSaleResponse,
 } = require("../mocks/sales");
 
