@@ -59,4 +59,5 @@ module.exports = {
     { productId: 2, quantity: 2 },
   ],
   notFoundResponse: { message: "Product not found|404" },
+  saleNotFoundResponse: { message: "Sale not found|404" },
 };
