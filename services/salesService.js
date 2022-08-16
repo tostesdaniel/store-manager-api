@@ -38,9 +38,9 @@ const salesService = {
   delete: async (id) => {
     const sale = await salesModel.getById(id);
 
-    await salesModel.delete(id);
-
     if (!sale.length) return { message: 'Sale not found|404' };
+    
+    await salesModel.delete(id);
 
     return true;
   },
