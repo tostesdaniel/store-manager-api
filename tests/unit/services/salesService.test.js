@@ -95,7 +95,7 @@ describe("Testa salesService", () => {
       it("Verifica se é retornado um erro", async () => {
         const response = await salesService.getById(1999);
 
-        expect(response).to.be.deep.equal({ message: "Sale not found" });
+        expect(response).to.be.deep.equal({ message: "Sale not found|404" });
       });
     });
 
