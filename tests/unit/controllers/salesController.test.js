@@ -154,10 +154,6 @@ describe("Testa salesController", () => {
   });
 
   describe("Ao deletar uma venda", () => {
-    const fakeSalesController = {
-      delete: () => {},
-    };
-
     describe("Caso a venda não exista", () => {
       const req = {};
       const res = {};
@@ -165,10 +161,14 @@ describe("Testa salesController", () => {
 
       before(() => {
         next = sinon.stub().returns();
+
+        sinon.stub(salesService, "delete").resolves(saleNotFoundResponse);
       });
 
+      after(() => salesService.delete.restore());
+
       it("Verifica que next é chamado com objeto de erro", async () => {
-        await fakeSalesController.delete(req, res, next);
+        await salesController.delete(req, res, next);
 
         expect(next.calledWith(saleNotFoundResponse)).to.be.true;
       });
@@ -183,16 +183,20 @@ describe("Testa salesController", () => {
         res.status = sinon.stub().returns(res);
         res.end = sinon.stub().returns();
         next = sinon.stub().returns();
+
+        sinon.stub(salesService, "delete").resolves(true);
       });
 
+      after(() => salesService.delete.restore());
+
       it("Verifica que status é chamado com código 204", async () => {
-        await fakeSalesController.delete(req, res, next);
+        await salesController.delete(req, res, next);
 
         expect(res.status.calledWith(204)).to.be.true;
       });
 
       it("Verifica que end é chamado", async () => {
-        await fakeSalesController.delete(req, res, next);
+        await salesController.delete(req, res, next);
 
         expect(res.end.called).to.be.true;
       });
