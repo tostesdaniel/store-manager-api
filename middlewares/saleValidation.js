@@ -1,4 +1,4 @@
-const validations = require('../services/validations/saleValidations');
+const validations = require('../validations/saleValidations');
 
 const saleValidation = (req, _res, next) => {
   const sales = req.body;
