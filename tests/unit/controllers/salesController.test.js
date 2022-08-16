@@ -2,16 +2,16 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const salesService = require("../../../services/salesService");
 const salesController = require("../../../controllers/salesController");
+const {
+  allSalesResponse,
+  noProductIdSaleBody,
+  notFoundResponse,
+  goodSaleBody,
+  formattedSingleSaleResponse,
+} = require("../mocks/sales");
 
 describe("Testa salesController", () => {
   describe("Ao cadastrar uma venda", () => {
-    const noProductIdSaleBody = [{ productId: 1999, quantity: 9 }];
-    const goodSaleBody = [
-      { productId: 1, quantity: 1 },
-      { productId: 2, quantity: 2 },
-    ];
-    const notFoundResponse = { message: "Product not found|404" };
-
     describe("Caso o produto não exista no banco de dados", () => {
       const req = {};
       const res = {};
@@ -69,27 +69,6 @@ describe("Testa salesController", () => {
   });
 
   describe("Ao listar vendas", () => {
-    const allSalesResponse = [
-      {
-        sale_id: 1,
-        date: "2022-08-16T00:06:39.000Z",
-        product_id: 1,
-        quantity: 5,
-      },
-      {
-        sale_id: 1,
-        date: "2022-08-16T00:06:39.000Z",
-        product_id: 2,
-        quantity: 10,
-      },
-      {
-        sale_id: 2,
-        date: "2022-08-16T00:06:39.000Z",
-        product_id: 3,
-        quantity: 15,
-      },
-    ];
-
     describe("Ao listar todas as vendas ", () => {
       const req = {};
       const res = {};
@@ -111,7 +90,7 @@ describe("Testa salesController", () => {
 
       it("Verifica se json é chamado com todas as vendas", async () => {
         await salesController.get(req, res);
-  
+
         expect(res.json.calledWith(allSalesResponse)).to.be.true;
       });
     });
@@ -154,7 +133,7 @@ describe("Testa salesController", () => {
 
         sinon
           .stub(salesService, "getById")
-          .resolves(allSalesResponse.slice(-1));
+          .resolves(formattedSingleSaleResponse);
       });
 
       after(() => salesService.getById.restore());
@@ -168,7 +147,7 @@ describe("Testa salesController", () => {
       it("Verifica se json é chamado com a venda buscada", async () => {
         await salesController.getById(req, res, next);
 
-        expect(res.json.calledWith([allSalesResponse[2]])).to.be.true;
+        expect(res.json.calledWith(formattedSingleSaleResponse)).to.be.true;
       });
     });
   });
