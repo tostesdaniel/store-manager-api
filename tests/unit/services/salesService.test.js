@@ -9,13 +9,6 @@ const {
 
 describe("Testa salesService", () => {
   describe("Ao cadastrar uma venda", () => {
-    const noProductIdSaleBody = [{ productId: 1999, quantity: 9 }];
-    const goodSaleBody = [
-      { productId: 1, quantity: 1 },
-      { productId: 2, quantity: 2 },
-    ];
-    const notFoundResponse = { message: "Product not found|404" };
-
     describe("Caso o produto não exista no banco de dados", () => {
       before(async () => {
         sinon.stub(salesModel, "create").resolves();
