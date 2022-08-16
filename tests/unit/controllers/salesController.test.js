@@ -185,10 +185,10 @@ describe("Testa salesController", () => {
         next = sinon.stub().returns();
       });
 
-      it("Verifica que status é chamado com código 201", async () => {
+      it("Verifica que status é chamado com código 204", async () => {
         await fakeSalesController.delete(req, res, next);
 
-        expect(res.status.calledWith(201)).to.be.true;
+        expect(res.status.calledWith(204)).to.be.true;
       });
 
       it("Verifica que end é chamado", async () => {
