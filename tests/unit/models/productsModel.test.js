@@ -2,7 +2,7 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const productsModel = require("../../../models/productsModel");
 const connection = require("../../../models/connection");
-const { allProducts } = require("../mocks/products");
+const { allProducts, oneProduct } = require("../mocks/products");
 
 describe("Testa productsModel", () => {
   describe("Ao listar todos os produtos", () => {
@@ -88,6 +88,28 @@ describe("Testa productsModel", () => {
       const product = await productsModel.update(1, { name: "Mjolnir" });
 
       expect(product).to.be.deep.equal(updatedProduct);
+    });
+  });
+
+  describe("Ao buscar por nome de um produto", () => {
+    const salesModelMock = {
+      search: () => {},
+    };
+
+    describe("Caso não seja passado um termo na busca", () => {
+      it("Verifica se é retornado todos os produtos", async () => {
+        const response = await salesModelMock.search("");
+
+        expect(response).to.be.equal(allProducts);
+      });
+    });
+
+    describe("Caso seja passado um termo na busca", () => {
+      it("Verifica se é retornado os produtos que contém o termo buscado", async () => {
+        const response = await salesModelMock.search("Escudo");
+
+        expect(response).to.be.equal(oneProduct);
+      });
     });
   });
 });
