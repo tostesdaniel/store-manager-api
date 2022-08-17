@@ -48,11 +48,11 @@ const salesModel = {
 
     return true;
   },
-  update: async (id, { product_id: productId, quantity }) => {
+  update: async (id, { productId, quantity }) => {
     const query = ` UPDATE StoreManager.sales_products 
-    SET product_id = ?, quantity = ? WHERE sale_id = ?;`;
+    SET quantity = ? WHERE sale_id = ? AND product_id = ?;`;
 
-    await connection.execute(query, [productId, quantity, id]);
+    await connection.execute(query, [quantity, id, productId]);
 
     return id;
   },
