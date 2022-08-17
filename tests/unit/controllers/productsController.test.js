@@ -2,15 +2,9 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const productsController = require("../../../controllers/productsController");
 const productsService = require("../../../services/productsService");
-const { oneProduct } = require("../mocks/products");
+const { allProducts, oneProduct } = require("../mocks/products");
 
 describe("Testa productsController", () => {
-  const allProducts = [
-    { id: 1, name: "Martelo de Thor" },
-    { id: 2, name: "Traje de encolhimento" },
-    { id: 3, name: "Escudo do Capitão América" },
-  ];
-
   describe("Ao listar todos os produtos", () => {
     const req = {};
     const res = {};
