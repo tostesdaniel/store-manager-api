@@ -2,14 +2,9 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const productsModel = require("../../../models/productsModel");
 const connection = require("../../../models/connection");
+const { allProducts } = require("../mocks/products");
 
 describe("Testa productsModel", () => {
-  const allProducts = [
-    { id: 1, name: "Martelo de Thor" },
-    { id: 2, name: "Traje de encolhimento" },
-    { id: 3, name: "Escudo do Capitão América" },
-  ];
-
   describe("Ao listar todos os produtos", () => {
     before(async () =>
       sinon.stub(connection, "execute").resolves([[allProducts]])
