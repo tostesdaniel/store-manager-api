@@ -31,6 +31,12 @@ const productsModel = {
     const query = 'DELETE FROM StoreManager.products WHERE id = ?';
     await connection.execute(query, [id]);
   },
+  search: async (name) => {
+    const query = 'SELECT id, name FROM StoreManager.products WHERE name LIKE %?%';
+    const [products] = await connection.execute(query, [name]);
+
+    return products;
+  },
 };
 
 module.exports = productsModel;
