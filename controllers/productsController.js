@@ -52,7 +52,7 @@ const productsController = {
   search: async (req, res) => {
     const { q } = req.query;
 
-    const products = await productsService.update(q);
+    const products = await productsService.search(q);
 
     return res.status(200).json(products);
   },
