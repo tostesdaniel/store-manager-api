@@ -32,8 +32,8 @@ const productsModel = {
     await connection.execute(query, [id]);
   },
   search: async (name) => {
-    const query = 'SELECT id, name FROM StoreManager.products WHERE name LIKE %?%';
-    const [products] = await connection.execute(query, [name]);
+    const query = 'SELECT id, name FROM StoreManager.products WHERE name LIKE ?';
+    const [products] = await connection.execute(query, [`%${name}%`]);
 
     return products;
   },
