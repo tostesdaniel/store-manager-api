@@ -56,6 +56,11 @@ const productsService = {
 
     return true;
   },
+  search: async (name) => {
+    const products = await productsModel.search(name);
+
+    return products;
+  },
 };
 
 module.exports = productsService;
