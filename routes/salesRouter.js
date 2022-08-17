@@ -10,6 +10,8 @@ salesRouter.get('/', salesController.get);
 
 salesRouter.get('/:id', salesController.getById);
 
+salesRouter.put('/:id', saleValidation, salesController.update);
+
 salesRouter.delete('/:id', salesController.delete);
 
 module.exports = salesRouter;
