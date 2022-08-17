@@ -173,4 +173,26 @@ describe("Testa productsService", () => {
       });
     });
   });
+
+  describe("Ao buscar por nome de um produto", () => {
+    const productsServiceMock = {
+      search: () => {},
+    };
+
+    describe("Caso não seja passado um termo na busca", () => {
+      it("Verifica se é retornado todos os produtos", async () => {
+        const response = await productsServiceMock.search("");
+
+        expect(response).to.be.equal(allProducts);
+      });
+    });
+
+    describe("Caso seja passado um termo na busca", () => {
+      it("Verifica se é retornado os produtos que contém o termo buscado", async () => {
+        const response = await productsServiceMock.search("Escudo");
+
+        expect(response).to.be.equal(oneProduct);
+      });
+    });
+  });
 });
