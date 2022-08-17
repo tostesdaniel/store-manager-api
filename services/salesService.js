@@ -49,9 +49,20 @@ const salesService = {
 
     if (!sale.length) return { message: 'Sale not found|404' };
 
-    const updatedSale = await salesModel.update(id, products);
+    const getProducts = await Promise.all(
+      products.map(({ productId }) => productsModel.getProductById(productId)),
+    );
+    const invalidProducts = getProducts.some(
+      (product) => Array.isArray(product) && !product.length,
+    );
 
-    return { saleId: updatedSale, itemsUpdated: products };
+    if (invalidProducts) return { message: 'Product not found|404' };
+
+    await Promise.all(
+      products.map((product) => salesModel.update(id, product)),
+    );
+
+    return { saleId: id, itemsUpdated: products };
   },
 };
 
