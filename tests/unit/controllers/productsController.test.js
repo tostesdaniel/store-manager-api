@@ -2,6 +2,7 @@ const sinon = require("sinon");
 const { expect } = require("chai");
 const productsController = require("../../../controllers/productsController");
 const productsService = require("../../../services/productsService");
+const { oneProduct } = require("../mocks/products");
 
 describe("Testa productsController", () => {
   const allProducts = [
@@ -310,6 +311,56 @@ describe("Testa productsController", () => {
         await productsController.delete(req, res, next);
 
         expect(res.end.called).to.be.true;
+      });
+    });
+  });
+
+  describe("Ao buscar por nome de um produto", () => {
+    const productsControllerMock = {
+      search: () => {},
+    };
+
+    describe("Caso não seja passado um termo na busca", () => {
+      const req = {};
+      const res = {};
+
+      before(() => {
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+      });
+
+      it("Verifica se status é chamado com código 200", async () => {
+        await productsControllerMock.search(req, res);
+
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+
+      it("Verifica se json é chamado com todos os produtos", async () => {
+        await productsControllerMock.search(req, res);
+
+        expect(res.json.calledWith(allProducts)).to.be.true;
+      });
+    });
+
+    describe("Caso seja passado um termo na busca", () => {
+      const req = {};
+      const res = {};
+
+      before(() => {
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+      });
+
+      it("Verifica se é status é chamado com código 200", async () => {
+        await productsControllerMock.search(req, res);
+
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+
+      it("Verifica se json é chamado com os produtos buscados", async () => {
+        await productsControllerMock.search(req, res);
+
+        expect(res.json.calledWith(oneProduct)).to.be.true;
       });
     });
   });
