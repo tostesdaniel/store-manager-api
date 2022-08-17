@@ -92,21 +92,25 @@ describe("Testa productsModel", () => {
   });
 
   describe("Ao buscar por nome de um produto", () => {
-    const salesModelMock = {
-      search: () => {},
-    };
-
     describe("Caso não seja passado um termo na busca", () => {
+      before(() => sinon.stub(connection, "execute").resolves([allProducts]));
+
+      after(() => connection.execute.restore());
+
       it("Verifica se é retornado todos os produtos", async () => {
-        const response = await salesModelMock.search("");
+        const response = await productsModel.search("");
 
         expect(response).to.be.equal(allProducts);
       });
     });
 
     describe("Caso seja passado um termo na busca", () => {
+      before(() => sinon.stub(connection, "execute").resolves([oneProduct]));
+
+      after(() => connection.execute.restore());
+
       it("Verifica se é retornado os produtos que contém o termo buscado", async () => {
-        const response = await salesModelMock.search("Escudo");
+        const response = await productsModel.search("Escudo");
 
         expect(response).to.be.equal(oneProduct);
       });
