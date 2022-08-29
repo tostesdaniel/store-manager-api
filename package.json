@@ -46,6 +46,7 @@
     "nodemon": "^2.0.4",
     "nyc": "^15.1.0",
     "sinon": "^11.1.1",
-    "supertest": "^6.2.2"
+    "supertest": "^6.2.2",
+    "swagger-autogen": "^2.21.5"
   }
 }
