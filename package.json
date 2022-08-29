@@ -14,7 +14,8 @@
     "debug": "nodemon --ignore coverage index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",
     "migration": "node -e \"require('./__tests__/_utils').runMigration()\"",
-    "seed": "node -e \"require('./__tests__/_utils').runSeed()\""
+    "seed": "node -e \"require('./__tests__/_utils').runSeed()\"",
+    "gen-docs": "node swagger.js"
   },
   "repository": {
     "type": "git",
